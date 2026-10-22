@@ -1,4 +1,5 @@
 import pgzrun
+import random
 WIDTH = 500
 HEIGHT = 500
 toprect = Rect(0,0,500,50)
@@ -8,6 +9,8 @@ answer_left = Rect(40,160,350,100)
 answer_right = Rect(40,280,350,100)
 timer = Rect(430,100,50,50)
 time = 10
+question_1 =[]
+splitted_value = []
 def draw():
     screen.draw.filled_rect((toprect),("white"))
     screen.draw.filled_rect((questionbar),("blue"))
@@ -18,6 +21,9 @@ def draw():
     screen.draw.textbox(("Welcome to quizmaster"),toprect,color = ("black"),shadow = (1,1),scolor = ("grey"))
     screen.draw.textbox(("Skip"),skipbar,color = ("black"),angle = 90,shadow = (1,1),scolor = ("grey"))
     screen.draw.textbox((str(time)),timer,color = ("black"),shadow = (1,1),scolor = ("grey"))
+    screen.draw.textbox((splitted_value[0]),questionbar,color = ("black"),shadow = (0.5,0.5),scolor = ("grey"))
+    screen.draw.textbox((splitted_value[1]),answer_left,color = ("black"),shadow = (0.5,0.5),scolor = ("grey"))
+    screen.draw.textbox((splitted_value[2]),answer_right,color = ("black"),shadow = (0.5,0.5),scolor = ("grey"))
 def update():
     toprect.x -= 2
     if toprect.x == -500:
@@ -30,6 +36,17 @@ def time_schedule():
 def game_over():
     global time
     time = 0
-
+def read():
+    global question_1, splitted_value
+    file = open(r"C:\Users\ahuja\OneDrive\Desktop\coding\python game developer\quizmaster\questionhomework.txt","r")
+    for i in file:
+        question_1.append(i)
+def reading_list():
+    global question_1, splitted_value
+    random.shuffle(question_1)
+    deleted_value = question_1.pop(0)
+    splitted_value = deleted_value.split(",")
+read()
+reading_list()
 clock.schedule_interval(time_schedule,1)
 pgzrun.go()
