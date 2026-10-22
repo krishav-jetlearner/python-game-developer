@@ -12,7 +12,7 @@ answer_skipbar = Rect(440,160,50,200)
 timer = Rect(430,100,50,50)
 time = 10
 question_1 = []
-splited_value = []
+
 def draw():
     screen.clear()
     screen.draw.filled_rect((toprect),("green")) 
@@ -31,6 +31,7 @@ def draw():
     screen.draw.textbox((splitted_value[2]),answer_left_bottom,color = ("black"),shadow = (1,1),scolor = ("grey"))
     screen.draw.textbox((splitted_value[3]),answer_right_top,color = ("black"),shadow = (1,1),scolor = ("grey"))
     screen.draw.textbox((splitted_value[4]),answer_right_bottom,color = ("black"),shadow = (1,1),scolor = ("grey"))
+    
     if toprect.x == -500:
         toprect.x = 500
 
@@ -39,9 +40,13 @@ def time_schedule():
     if time > 0:
         time -= 1
     
+    
 def game_over():
-    global time
+    global time, splitted_value
     time = 0
+    splitted_value = ["","","","","","","76"]
+        
+    
 def read():
     global question_1
     file = open(r"C:\Users\ahuja\OneDrive\Desktop\coding\python game developer\quizmaster\questionclass.txt","r")
@@ -54,9 +59,40 @@ def reading_list():
     deleted_value = question_1.pop(0)
     splitted_value = deleted_value.split(",")
 def on_mouse_down(pos):
-    pass
+    if answer_right_top.collidepoint(pos):
+        print(splitted_value[5])
+        if int(splitted_value[5]) == 3:
+            answer_reading()
+        else:
+            game_over()
+    if answer_right_bottom.collidepoint(pos):
+        print(splitted_value[5])
+        if int(splitted_value[5]) == 4:
+            answer_reading()
+        else:
+            game_over()
+    if answer_left_bottom.collidepoint(pos):
+        print(type(splitted_value[5]))
+        if int(splitted_value[5]) == 2:
+            answer_reading()
+        else:
+            game_over()
+    if answer_left_top.collidepoint(pos):
+        print(splitted_value[5])
+        if int(splitted_value[5]) == 1:
+            answer_reading()
+        else:
+            game_over()
+def answer_reading():
+    global time
+    if len(question_1) >= 1:
+        reading_list()
+        time = 10
+    else:
+        game_over()
+
 read()
 reading_list()
-print(splitted_value)
+
 clock.schedule_interval(time_schedule,1)
 pgzrun.go()
