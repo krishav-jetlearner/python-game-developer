@@ -12,7 +12,8 @@ answer_skipbar = Rect(440,160,50,200)
 timer = Rect(430,100,50,50)
 time = 10
 question_1 = []
-
+score = 0
+gameover = False
 def draw():
     screen.clear()
     screen.draw.filled_rect((toprect),("green")) 
@@ -31,6 +32,12 @@ def draw():
     screen.draw.textbox((splitted_value[2]),answer_left_bottom,color = ("black"),shadow = (1,1),scolor = ("grey"))
     screen.draw.textbox((splitted_value[3]),answer_right_top,color = ("black"),shadow = (1,1),scolor = ("grey"))
     screen.draw.textbox((splitted_value[4]),answer_right_bottom,color = ("black"),shadow = (1,1),scolor = ("grey"))
+    if gameover == True:
+        screen.draw.textbox((str(score)),questionbar,color = ("black"),shadow = (1,1),scolor = ("grey"))
+        screen.draw.filled_rect((toprect),("green"))
+        screen.draw.textbox(("You finished"),toprect,color = ("black"),shadow = (1,1),scolor = ("grey"))
+
+
     
     if toprect.x == -500:
         toprect.x = 500
@@ -39,12 +46,17 @@ def time_schedule():
     global time
     if time > 0:
         time -= 1
+    elif time == 0:
+        game_over()
+    
+    
     
     
 def game_over():
-    global time, splitted_value
+    global time, splitted_value, gameover
     time = 0
     splitted_value = ["","","","","","","76"]
+    gameover = True
         
     
 def read():
@@ -59,30 +71,37 @@ def reading_list():
     deleted_value = question_1.pop(0)
     splitted_value = deleted_value.split(",")
 def on_mouse_down(pos):
+    global score
     if answer_right_top.collidepoint(pos):
         print(splitted_value[5])
         if int(splitted_value[5]) == 3:
             answer_reading()
+            score += 1
         else:
             game_over()
     if answer_right_bottom.collidepoint(pos):
         print(splitted_value[5])
         if int(splitted_value[5]) == 4:
             answer_reading()
+            score += 1
         else:
             game_over()
     if answer_left_bottom.collidepoint(pos):
         print(type(splitted_value[5]))
         if int(splitted_value[5]) == 2:
             answer_reading()
+            score += 1
         else:
             game_over()
     if answer_left_top.collidepoint(pos):
         print(splitted_value[5])
         if int(splitted_value[5]) == 1:
             answer_reading()
-        else:
-            game_over()
+            score += 1
+
+    if answer_skipbar.collidepoint(pos):
+        answer_reading()
+            
 def answer_reading():
     global time
     if len(question_1) >= 1:
